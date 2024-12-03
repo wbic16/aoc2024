@@ -18,3 +18,14 @@ In order to solve today's puzzle, you need to make use of conversions from text.
 * `split_whitespace`: Splits an input string
 * `Vec<i32>`: Dynamic array of integers
 * `parse::<i32>`: Converts from text to a number
+
+# Day 2: Red-Nosed Reports
+https://adventofcode.com/2024/day/2
+
+## Lessons
+
+The second day asks us to start reviewing reactor reports for safe/unsafe operation.
+
+In order to solve today's puzzle, you need to continue learning how to parse/split text into integers.
+
+Gold Star 1: In our data set, only 660 of the 1,000 reports are marked safe!
