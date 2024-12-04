@@ -224,21 +224,50 @@ fn day2_part2(input: String) -> usize {
   return result;
 }
 
-fn day3_tokenize(input: String) -> Vec<i64> {
+fn day3_tokenize(input: String, enabler: bool) -> Vec<i64> {
   let mut result: Vec<i64> = Default::default();
 
   let mut left: i64 = 0;
   let mut right: i64 = 0;
   let mut stage = 0;
+  let mut pre_stage = 0;
+  let mut pre = String::new();
   const ZERO: u8 = '0' as u8;
   const NINE: u8 = '9' as u8;
   let mut left_len = 0;
   let mut right_len = 0;
+  let mut enabled = true;
   for char in input.as_bytes() {
+    if enabler {
+      if pre_stage == 0 && *char == 'd' as u8 { pre_stage = 1; pre.push(*char as char); continue; }
+      if pre_stage == 1 && *char == 'o' as u8 { pre_stage = 2; pre.push(*char as char); continue; }
+      if pre_stage == 2 && *char == '(' as u8 { pre_stage = 3; continue; }
+      if pre_stage == 3 && *char == ')' as u8 && pre == "do" {
+        enabled = true;
+        pre_stage = 0;
+        stage = 0;
+        pre.clear();
+        continue;
+      }
+      if pre_stage == 2 && *char == 'n' as u8 { pre_stage = 3; pre.push(*char as char); continue; }
+      if pre_stage == 3 && *char == '\'' as u8 { pre_stage = 4; pre.push(*char as char); continue; }
+      if pre_stage == 4 && *char == 't' as u8 { pre_stage = 5; pre.push(*char as char); continue; }
+      if pre_stage == 5 && *char == '(' as u8 { pre_stage = 6; continue; }
+      if pre_stage == 6 && *char == ')' as u8 && pre == "don't" {
+        enabled = false;
+        pre_stage = 0;
+        stage = 0;
+        pre.clear();
+        continue;
+      }
+
+      if enabled == false { continue; }
+    }
+
     if stage == 0 && *char == 'm' as u8 { stage = 1; continue; }
     if stage == 1 && *char == 'u' as u8 { stage = 2; continue; }
     if stage == 2 && *char == 'l' as u8 { stage = 3; continue; }
-    if stage == 3 && *char == '(' as u8 { stage = 4; continue; }
+    if stage == 3 && *char == '(' as u8 { stage = 4; continue; }    
     if stage == 4 && *char <= NINE && *char >= ZERO && left_len < 3 {
       left = left * 10 + ((*char - ZERO) as i64);
       left_len += 1;
@@ -269,7 +298,7 @@ fn day3_tokenize(input: String) -> Vec<i64> {
 }
 
 fn day3(input: String) -> usize {
-  let records = day3_tokenize(input);
+  let records = day3_tokenize(input, false);
   let mut sum: usize = 0;
   for value in records {
     sum += value as usize;
@@ -278,8 +307,14 @@ fn day3(input: String) -> usize {
   return sum;
 }
 
-fn day3_part2(_input: String) -> usize {
-  return 0;
+fn day3_part2(input: String) -> usize {
+  let records = day3_tokenize(input, true);
+  let mut sum: usize = 0;
+  for value in records {
+    sum += value as usize;
+  }
+
+  return sum;
 }
 
 fn main() {
@@ -298,7 +333,7 @@ fn main() {
   println!("Day 2: {} + {}", result2_1, result2_2);
 
   let scroll3 = phext::fetch(problems.as_str(), phext::to_coordinate("1.1.1/1.1.1/1.1.3"));
-  let result3_1 = day3(scroll3.clone()); // 188,331,080 too high
-  let result3_2 = day3_part2(scroll3);  // 183,669,043
+  let result3_1 = day3(scroll3.clone());
+  let result3_2 = day3_part2(scroll3); // 84,836,598 too high
   println!("Day 3: {} + {}", result3_1, result3_2);
 }

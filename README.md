@@ -41,7 +41,10 @@ The third day starts to deal with data corruption and more tokenizing.
 To solve this puzzle, you need to build a typical tokenizer that tracks state changes.
 The problem description is pretty clear - you reset whenever you run across foul input.
 
+The second star ensures that you built a tokenizer.
+
 * Gold Star 1: 183,669,043
+* Gold Star 2:  59,097,164
 
 ## Day 4: Ceres Search
 https://adventofcode.com/2024/day/4
