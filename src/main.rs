@@ -183,46 +183,104 @@ fn day2_validate(line: &str, report: &Vec<Day2Node>) -> bool {
 }
 
 fn day2_part2(input: String) -> usize {
-    let lines = input.split('\n').into_iter();
-    let mut result = 0;
-    let mut blip: i32 = -1;
-  
-    for line in lines {
-      let mut items = day2_tokenize(line);
+  let lines = input.split('\n').into_iter();
+  let mut result = 0;
+  let mut blip: i32 = -1;
 
-      let start: i32 = 0;
-      let end = items.len() as i32;
+  for line in lines {
+    let mut items = day2_tokenize(line);
 
-      let mut passed = day2_validate(line, &items);
-      if passed {
-        result += 1;
-      } else {
-        blip = start as i32;
-        while (passed == false) && (blip < end) {
-          let mut ri: usize = 0;
-          while ri < end as usize {
-            items[ri].enabled = ri != (blip as usize);
-            ri += 1;
-          }
-          passed = day2_validate(line, &items);
-          if passed {
-            result += 1;
-          }
-          blip += 1;
+    let start: i32 = 0;
+    let end = items.len() as i32;
+
+    let mut passed = day2_validate(line, &items);
+    if passed {
+      result += 1;
+    } else {
+      blip = start as i32;
+      while (passed == false) && (blip < end) {
+        let mut ri: usize = 0;
+        while ri < end as usize {
+          items[ri].enabled = ri != (blip as usize);
+          ri += 1;
         }
-      }
-
-      if passed == false {
-        println!("{}: Failed\n\n", line);
-      } else {
-        let mut blipped = format!("");
-        if blip >= 0 { blipped = format!(" ({})", blip); }
-        println!("{}: Passed{}\n", line, blipped);
+        passed = day2_validate(line, &items);
+        if passed {
+          result += 1;
+        }
+        blip += 1;
       }
     }
-  
-    return result;
+
+    if passed == false {
+      println!("{}: Failed\n\n", line);
+    } else {
+      let mut blipped = format!("");
+      if blip >= 0 { blipped = format!(" ({})", blip); }
+      println!("{}: Passed{}\n", line, blipped);
+    }
   }
+
+  return result;
+}
+
+fn day3_tokenize(input: String) -> Vec<i64> {
+  let mut result: Vec<i64> = Default::default();
+
+  let mut left: i64 = 0;
+  let mut right: i64 = 0;
+  let mut stage = 0;
+  const ZERO: u8 = '0' as u8;
+  const NINE: u8 = '9' as u8;
+  let mut left_len = 0;
+  let mut right_len = 0;
+  for char in input.as_bytes() {
+    if stage == 0 && *char == 'm' as u8 { stage = 1; continue; }
+    if stage == 1 && *char == 'u' as u8 { stage = 2; continue; }
+    if stage == 2 && *char == 'l' as u8 { stage = 3; continue; }
+    if stage == 3 && *char == '(' as u8 { stage = 4; continue; }
+    if stage == 4 && *char <= NINE && *char >= ZERO && left_len < 3 {
+      left = left * 10 + ((*char - ZERO) as i64);
+      left_len += 1;
+      //println!("Left: {}", left);
+      continue;
+    }
+    if stage == 4 && *char == ',' as u8 { stage = 5; continue; }
+    if stage == 5 && *char <= NINE && *char >= ZERO && right_len < 3 {
+      right = right * 10 + ((*char - ZERO) as i64);
+      right_len += 1;
+      //println!("Right: {}", right);
+      continue;
+    }
+    if stage == 5 && *char == ')' as u8 {
+      let mul = left * right;
+      result.push(mul);
+      //println!("Mul: {} x {} = {}", left, right, mul);
+    }
+
+    stage = 0;
+    left = 0;
+    right = 0;
+    left_len = 0;
+    right_len = 0;
+  }
+
+  return result;
+}
+
+fn day3(input: String) -> usize {
+  let records = day3_tokenize(input);
+  let mut sum: usize = 0;
+  for value in records {
+    sum += value as usize;
+  }
+
+  return sum;
+}
+
+fn day3_part2(_input: String) -> usize {
+  return 0;
+}
 
 fn main() {
   println!("Advent of Code 2024");
@@ -238,4 +296,9 @@ fn main() {
   let result2_1 = day2(scroll2.clone());
   let result2_2 = day2_part2(scroll2); // 679,687 too low, 701 too high
   println!("Day 2: {} + {}", result2_1, result2_2);
+
+  let scroll3 = phext::fetch(problems.as_str(), phext::to_coordinate("1.1.1/1.1.1/1.1.3"));
+  let result3_1 = day3(scroll3.clone()); // 188,331,080 too high
+  let result3_2 = day3_part2(scroll3);  // 183,669,043
+  println!("Day 3: {} + {}", result3_1, result3_2);
 }

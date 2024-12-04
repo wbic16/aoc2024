@@ -33,4 +33,11 @@ The second gold star is a bit of an exercise in frustration with edge cases.
 Gold Star 1: In our data set, only 660 of the 1,000 reports are marked safe!
 Gold Star 2: Enter the Problem Dampener - currently unsolved (687-701)
 
-# Day 3: Pending
+# Day 3: Mull It Over
+https://adventofcode.com/2024/day/3
+
+The third day starts to deal with data corruption and more tokenizing.
+To solve this puzzle, you need to build a typical tokenizer that tracks state changes.
+The problem description is pretty clear - you reset whenever you run across foul input.
+
+Gold Star 1: 183,669,043
