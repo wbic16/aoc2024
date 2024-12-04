@@ -42,3 +42,39 @@ To solve this puzzle, you need to build a typical tokenizer that tracks state ch
 The problem description is pretty clear - you reset whenever you run across foul input.
 
 * Gold Star 1: 183,669,043
+
+## Day 4: Ceres Search
+https://adventofcode.com/2024/day/4
+
+Ceres Search asks us to perform input masking - determining how many instances of XMAS appear.
+One way to solve this problem is to generate a few transformations of the input.
+Given an input matrix with M columns and rows...we need to transform the input into a normalized form.
+We can short-circuit this process by computing offsets from the first character as shown below.
+
+1. Forwards (N, N+1, N+2, N+3)
+2. Backwards (N, N-1, N-2, N-3)
+3. Rotated -90 Degrees (N, N-M, N-2M, N-3M)
+4. Rotated +90 Degrees (N, N+M, N+2M, N+3M)
+5. Diagonal 1 (N, N+(M+1), N+2*(M+1), N+3*(M+1))
+6. Diagonal 2 (N, N+(M-1), N+2*(M-1), N+3*(M-1))
+7. Diagonal 3 (N, N-(M+1), N-2*(M+1), N-3*(M+1))
+8. Diagonal 4 (N, N-(M-1), N-2*(M-1), N-3*(M-1))
+
+A given input character is viable if it appears in one of the sequences above.
+We'll compute a score for each position in the input.
+'X' marks the spot - we only need to search from those points.
+
+Step 1: Scan the input and generate a mask of all potential X positions.
+Step 2: For each potential location, perform a lookup to see if we can match an 'MAS' sequence to it.
+Step 3: Whenever we identify an XMAS sequence, we'll add it to the X location.
+
+Here's an example:
+
+```
+XMASXMAS    2...2... Rules 1 & 5
+XMASXMAS => 1...1... Rule 1
+XMASXMAS    1...1... Rule 1
+XMASXMAS    2...2... Rules 1 & 7
+```
+
+In this simplified example, we can see that there are 12 instances of XMAS.
