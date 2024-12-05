@@ -81,3 +81,18 @@ XMASXMAS    2...2... Rules 1 & 7
 ```
 
 In this simplified example, we can see that there are 12 instances of XMAS.
+
+The problem statement was nice enough to hand us a decent case with 18 instances. This is the first problem that I broke out unit tests for...
+
+```
+MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX
+```
