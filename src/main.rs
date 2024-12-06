@@ -31,4 +31,9 @@ fn main() {
   let result4_1 = day4::main(scroll4.clone()); // 1442 too low, 2529 too high
   let result4_2 = day4::part2(scroll4);
   println!("Day 4: {} + {}", result4_1, result4_2);
+
+  let scroll5 = phext::fetch(problems.as_str(), phext::to_coordinate("1.1.1/1.1.1/1.1.5"));
+  let result5_1 = day5::main(scroll5.clone());
+  let result5_2 = day5::part2(scroll5);
+  println!("Day 4: {} + {}", result5_1, result5_2);
 }

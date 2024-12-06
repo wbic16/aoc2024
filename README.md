@@ -96,3 +96,11 @@ SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX
 ```
+
+## Day 5
+https://adventofcode.com/2024/day/5
+
+Today's puzzle focuses on parsing and validation in two passes.
+
+* Gold Star 1: 5955
+* Gold Star 2: 
