@@ -55,8 +55,8 @@ fn day5_validate(data: &Day5Data) -> usize {
       if first_index > -1 && second_index > -1 {
         if first_index > second_index {
           passed = false;
-          let summary = row.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",");
-          println!("Disallowed {} due to {}|{}.", summary, req.first, req.second);
+          //let summary = row.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",");
+          //println!("Disallowed {} due to {}|{}.", summary, req.first, req.second);
           break;
         }
       }
@@ -78,6 +78,60 @@ fn day5_validate(data: &Day5Data) -> usize {
   return total;
 }
 
+fn day5_fixup(data: &Day5Data) -> usize {
+  
+  // step 1: build invalid rows
+  let mut invalid:Vec<Vec<u32>> = Default::default();
+  for row in data.updates.iter() {
+    let mut passed = true;
+    for req in data.reqs.iter() {
+      let mut first_index = -1;
+      let mut second_index = -1;
+      let mut i = 0;
+
+      for number in row {
+        if *number == req.first {
+          first_index = i;
+        }
+        if *number == req.second {
+          second_index = i;
+        }
+        i += 1;
+      }
+
+      if first_index > -1 && second_index > -1 {
+        if first_index > second_index {
+          passed = false;
+          //let summary = row.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",");
+          //println!("Disallowed {} due to {}|{}.", summary, req.first, req.second);
+          break;
+        }
+      }
+    }
+
+    if passed == false {
+      invalid.push(row.clone());
+    }
+  }
+
+  // fixup invalid rows
+  //for row in invalid.iter() {
+  //  for req in data.reqs.iter() {
+
+  //  }
+  //}
+
+  let mut total: usize = 0;
+  for row in invalid {
+    let max = row.len();
+    let middle = (max + 1)/2 - 1;
+    total += row[middle] as usize;
+  }
+  // step 2: count the middles (assume odd?)
+
+  return total;
+}
+
 pub fn main(input: String) -> usize {
   let tokens = day5_tokenize(input);
   let result = day5_validate(&tokens);
@@ -85,8 +139,11 @@ pub fn main(input: String) -> usize {
   return result;
 }
 
-pub fn part2(_input: String) -> usize {
-  return 0;
+pub fn part2(input: String) -> usize {
+  let tokens = day5_tokenize(input);
+  let result = day5_validate(&tokens);
+
+  return result;
 }
 
 pub fn sample_data() -> String {
@@ -151,4 +208,11 @@ fn test_calculation() {
 
   println!("Sample: {}", result);
   assert!(result == 143);
+}
+
+#[test]
+fn test_reorder_1() {
+  let tokens = day5_tokenize(sample_data());
+
+
 }

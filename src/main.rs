@@ -6,6 +6,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 
 fn main() {
   println!("Advent of Code 2024");
@@ -35,5 +36,10 @@ fn main() {
   let scroll5 = phext::fetch(problems.as_str(), phext::to_coordinate("1.1.1/1.1.1/1.1.5"));
   let result5_1 = day5::main(scroll5.clone());
   let result5_2 = day5::part2(scroll5);
-  println!("Day 4: {} + {}", result5_1, result5_2);
+  println!("Day 5: {} + {}", result5_1, result5_2);
+
+  let scroll6 = phext::fetch(problems.as_str(), phext::to_coordinate("1.1.1/1.1.1/1.1.6"));
+  let result6_1 = day6::main(scroll6.clone());
+  let result6_2 = day6::part2(scroll6);
+  println!("Day 6: {} + {}", result6_1, result6_2);
 }
